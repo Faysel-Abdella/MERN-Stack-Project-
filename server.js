@@ -48,6 +48,16 @@ app.post("/api/v1/jobs", (req, res, next) => {
   }
   const job = { id: nanoid(10), company: company, position, position };
   jobs.push(job);
+  res.status(201).json({ job: job });
+});
+
+// GET SINGLE JOB
+app.get("/api/v1/jobs/:id", (req, res, next) => {
+  const { id } = req.params;
+  const job = jobs.find((job) => job.id === id);
+  if (!job) {
+    return res.status(404).json({ message: "No job with such id" });
+  }
   res.status(200).json({ job: job });
 });
 
