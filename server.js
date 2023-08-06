@@ -33,8 +33,22 @@ app.post("/", (req, res, next) => {
   res.json({ message: "Data received", data: req.body });
 });
 
+// GET ALL JOBS
 app.get("/api/v1/jobs", (req, res, next) => {
   res.status(200).json({ jobs: jobs });
+});
+
+// CREATE JOB
+app.post("/api/v1/jobs", (req, res, next) => {
+  const { company, position } = req.body;
+  if (!company || !position) {
+    return res
+      .status(400)
+      .json({ message: "Please provide the full information" });
+  }
+  const job = { id: nanoid(10), company: company, position, position };
+  jobs.push(job);
+  res.status(200).json({ job: job });
 });
 
 app.listen(process.env.PORT || 5100, () => {
