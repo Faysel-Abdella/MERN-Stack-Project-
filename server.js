@@ -3,8 +3,14 @@ dotenv.config();
 
 import express from "express";
 import morgan from "morgan";
+import { nanoid } from "nanoid";
 
 const app = express();
+
+let jobs = [
+  { id: nanoid(), company: "apple", position: "Front-end" },
+  { id: nanoid(), company: "google", position: "Back-end" },
+];
 
 // Parse any incomming json POST or PUT request and enable working with it
 // as just a javascript object
@@ -25,6 +31,10 @@ app.get("/", (req, res, next) => {
 app.post("/", (req, res, next) => {
   // console.log(req);
   res.json({ message: "Data received", data: req.body });
+});
+
+app.get("/api/v1/jobs", (req, res, next) => {
+  res.status(200).json({ jobs: jobs });
 });
 
 app.listen(process.env.PORT || 5100, () => {
