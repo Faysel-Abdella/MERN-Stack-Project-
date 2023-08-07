@@ -21,10 +21,12 @@ if (process.env.NODE_ENV === "development") {
 }
 
 import jobRouter from "./routes/jobRouter.js";
+import authRouter from "./routes/authRouter.js";
 
 // Routes
 
 app.use(jobRouter);
+app.use(authRouter);
 
 //404 middleware
 app.use("*", (req, res, next) => {
