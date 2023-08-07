@@ -19,7 +19,9 @@ export const getJob = async (req, res, next) => {
   const { id } = req.params;
   const job = await Job.findById(id);
   if (!job) {
-    return res.status(404).json({ message: "No job with such id" });
+    const error = new Error("Job not found for providing id");
+    error.StatusCode = StatusCodes.NOT_FOUND;
+    throw error;
   }
   res.status(StatusCodes.OK).json({ job: job });
 };
@@ -29,24 +31,26 @@ export const updateJob = async (req, res, next) => {
   const { newCompany, newPosition } = req.body;
   const obj = { newCompany, newPosition };
 
-  const updatedjob = await Job.findByIdAndUpdate(id, req.body, { new: true });
-  //remember that req.body is an object that conatines all request data
-  //By default findByIdAndUpdate returns the previuose all jobs, since i want to get the updatedone i passed { new: true } configuration
-  if (!updatedjob) {
-    return res.status(404).json({ message: "Job not found for edit" });
+  const updatedJob = await Job.findByIdAndUpdate(id, req.body, { new: true });
+  //remember that req.body is an object that contains all request data
+  //By default findByIdAndUpdate returns the previous all jobs, since i want to get the update done i passed { new: true } configuration
+  if (!updatedJob) {
+    const error = new Error();
+    error.StatusCode = StatusCodes.NOT_FOUND;
+    throw error;
   }
   res
     .status(StatusCodes.CREATED)
-    .json({ message: "job edited", job: updatedjob });
+    .json({ message: "job edited", job: updatedJob });
 };
 
 export const deleteJob = async (req, res, next) => {
   const { id } = req.params;
   const removedJob = await Job.findByIdAndDelete(id);
   if (!removedJob) {
-    return res.status(404).json({
-      message: "Job not found for delete, please provide a correct id",
-    });
+    const error = new Error("Job not found for providing id");
+    error.StatusCode = StatusCodes.NOT_FOUND;
+    throw error;
   }
   res.status(StatusCodes.OK).json({ message: "job deleted", job: removedJob });
 };

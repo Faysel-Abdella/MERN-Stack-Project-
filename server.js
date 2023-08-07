@@ -5,17 +5,18 @@ dotenv.config();
 import express from "express";
 import morgan from "morgan";
 import mongoose from "mongoose";
+import { StatusCodes } from "http-status-codes/build/cjs/status-codes.js";
 const app = express();
 
-// Parse any incomming json POST or PUT request and enable working with it
+// Parse any incoming json POST or PUT request and enable working with it
 // as just a javascript object
 app.use(express.json());
 
 //If i am not in development phase (if i am in production phase), i don't
-//to log any request deatils(only if i'm developing i want to log details)
+//to log any request details(only if i'm developing i want to log details)
 if (process.env.NODE_ENV === "development") {
   //When you deploy this app the deployment platform will change the NODE_ENV to
-  //"production" so the following line will not excute
+  //"production" so the following line will not execute
   app.use(morgan("dev"));
 }
 
@@ -31,8 +32,9 @@ app.use("*", (req, res, next) => {
 
 //Error middleware
 app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).json({ message: "Something went wrong in database" });
+  const statusCode = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+  const message = err.message || "Something went wrong";
+  res.status(statusCode).json({ message: message });
 });
 
 try {
