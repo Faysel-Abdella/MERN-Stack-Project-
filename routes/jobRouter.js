@@ -20,6 +20,4 @@ router.patch("/api/v1/jobs/:id", updateJob);
 
 router.delete("/api/v1/jobs/:id", deleteJob);
 
-router.get("/api/v1/jobs", getAllJobs);
-
 export default router;
