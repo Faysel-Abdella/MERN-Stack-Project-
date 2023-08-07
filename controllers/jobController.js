@@ -13,7 +13,7 @@ export const getAllJobs = async (req, res, next) => {
 
 export const createJob = async (req, res, next) => {
   const { company, position } = req.body;
-  const job = new Job({ company, position });
+  const job = new Job(company, position);
   await job.save();
   res.status(201).json({ job: job });
 };
