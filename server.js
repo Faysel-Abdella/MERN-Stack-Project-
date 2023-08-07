@@ -3,6 +3,7 @@ dotenv.config();
 
 import express from "express";
 import morgan from "morgan";
+import mongoose from "mongoose";
 const app = express();
 
 // Parse any incomming json POST or PUT request and enable working with it
@@ -33,6 +34,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Something went wrong in database" });
 });
 
-app.listen(process.env.PORT || 5100, () => {
-  console.log("server start");
-});
+try {
+  await mongoose.connect(process.env.MONGO_URL);
+  app.listen(process.env.PORT || 5100, () => {
+    console.log("server running... :)");
+  });
+} catch (err) {
+  console.log(err);
+  process.exit(1);
+}
