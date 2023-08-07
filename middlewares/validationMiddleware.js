@@ -27,15 +27,9 @@ export const validateJobInput = withValidatorErrors([
   body("company").notEmpty().withMessage("Company is required "),
   body("position").notEmpty().withMessage("Position is required"),
   body("jobStatus")
-    .notEmpty()
-    .withMessage("Job status is required")
     .isIn(Object.values(JOB_STATUS))
     .withMessage("Invalid job status"),
-  body("jobType")
-    .notEmpty()
-    .withMessage("Job type is required")
-    .isIn(Object.values(JOB_TYPE))
-    .withMessage("Invalid job type"),
-  body("jobLocation").notEmpty().withMessage("Job location type is required"),
+  body("jobType").isIn(Object.values(JOB_TYPE)).withMessage("Invalid job type"),
+  body("jobLocation").notEmpty().withMessage("Job location is required"),
 ]);
 //Now in all routes i will add these exporting function by passing my own testing logic
