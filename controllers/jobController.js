@@ -8,19 +8,22 @@ let jobs = [
 ];
 
 export const getAllJobs = async (req, res, next) => {
+  const jobs = await Job.find({});
   res.status(200).json({ jobs: jobs });
 };
 
 export const createJob = async (req, res, next) => {
   const { company, position } = req.body;
-  const job = new Job(company, position);
+  const job = new Job({ company, position });
   await job.save();
+  //The other way is to say const job = Job.create({company, position})
+  //create() will create and save to DB automatically
   res.status(201).json({ job: job });
 };
 
 export const getJob = async (req, res, next) => {
   const { id } = req.params;
-  const job = jobs.find((job) => job.id === id);
+  const job = await Job.findById(id);
   if (!job) {
     return res.status(404).json({ message: "No job with such id" });
   }
