@@ -92,6 +92,18 @@ app.delete("/api/v1/jobs/:id", (req, res, next) => {
   res.status(200).json({ message: "job deleted" });
 });
 
+//404 middleware
+app.use("*", (req, res, next) => {
+  //'*' stands for all routes that do not match the all the above routes
+  res.status(404).json({ message: "page not found" });
+});
+
+//Error middleware
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(500).json({ message: "Something went wrong in database" });
+});
+
 app.listen(process.env.PORT || 5100, () => {
   console.log("server start");
 });
