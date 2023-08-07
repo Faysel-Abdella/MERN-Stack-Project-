@@ -62,22 +62,34 @@ app.get("/api/v1/jobs/:id", (req, res, next) => {
 });
 
 //EDIT JOB
-app.patch("/api/v1/jobs/:editId", (req, res, next) => {
-  const { editId } = req.params;
+app.patch("/api/v1/jobs/:id", (req, res, next) => {
+  const { id } = req.params;
   const { newCompany, newPosition } = req.body;
-  console.log(editId, newCompany, newPosition);
   if (!newCompany || !newPosition) {
     return res
       .status(400)
       .json({ message: "Please to edit provide all informations" });
   }
-  const job = jobs.find((job) => job.id === editId);
+  const job = jobs.find((job) => job.id === id);
   if (!job) {
     return res.status(404).json({ message: "Job not found for edit" });
   }
   job.company = newCompany;
   job.position = newPosition;
   res.status(201).json({ message: "job edited", job: job });
+});
+
+// DELETE job
+app.delete("/api/v1/jobs/:id", (req, res, next) => {
+  const { id } = req.params;
+  const job = jobs.find((job) => job.id === id);
+  if (!job) {
+    return res.status(404).json({
+      message: "Job not found for delete, please provide a correct id",
+    });
+  }
+  jobs = jobs.filter((job) => job.id !== id);
+  res.status(200).json({ message: "job deleted" });
 });
 
 app.listen(process.env.PORT || 5100, () => {
