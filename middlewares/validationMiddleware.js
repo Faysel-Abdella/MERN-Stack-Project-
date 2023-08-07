@@ -1,5 +1,6 @@
 import { body, validationResult } from "express-validator";
 import { StatusCodes } from "http-status-codes";
+import { JOB_TYPE, JOB_STATUS } from "../util/constants.js";
 
 //This middleware contains validate test and the function for error form validating
 
@@ -22,13 +23,19 @@ const withValidatorErrors = (validateValues) => {
   ];
 };
 
-export const validateTest = withValidatorErrors([
-  body("name")
+export const validateJobInput = withValidatorErrors([
+  body("company").notEmpty().withMessage("Company is required "),
+  body("position").notEmpty().withMessage("Position is required"),
+  body("jobStatus")
     .notEmpty()
-    .withMessage("Please provide the whole infos")
-    .isLength({ min: 3 })
-    .withMessage("name must be at least 3 character")
-    .trim(),
+    .withMessage("Job status is required")
+    .isIn(Object.values(JOB_STATUS))
+    .withMessage("Invalid job status"),
+  body("jobType")
+    .notEmpty()
+    .withMessage("Job type is required")
+    .isIn(Object.values(JOB_TYPE))
+    .withMessage("Invalid job type"),
+  body("jobLocation").notEmpty().withMessage("Job location type is required"),
 ]);
-
-//Now in all controllers i will add this exporting function by passing my own testing logic
+//Now in all routes i will add these exporting function by passing my own testing logic
