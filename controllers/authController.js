@@ -7,6 +7,12 @@ export const register = async (req, res, next) => {
   const password = req.body.password;
   const lastName = req.body.lastName;
   const location = req.body.location;
+  //Make the first user to be an admin and all other users to be the default defined
+  //when i create the model (role: 'user')
+  const isFirstUser = (await User.countDocuments()) == 0;
+  console.log(isFirstUser, typeof isFirstUser);
+  req.body.role = isFirstUser ? "admin" : "user";
+  const role = req.body.role;
 
   const user = new User({
     name,
@@ -14,6 +20,7 @@ export const register = async (req, res, next) => {
     password,
     lastName,
     location,
+    role,
   });
 
   await user.save();
