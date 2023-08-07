@@ -1,3 +1,5 @@
+import Job from "../models/jobModels.js";
+
 import { nanoid } from "nanoid";
 
 let jobs = [
@@ -11,13 +13,8 @@ export const getAllJobs = async (req, res, next) => {
 
 export const createJob = async (req, res, next) => {
   const { company, position } = req.body;
-  if (!company || !position) {
-    return res
-      .status(400)
-      .json({ message: "Please provide the full information" });
-  }
-  const job = { id: nanoid(10), company: company, position, position };
-  jobs.push(job);
+  const job = new Job({ company, position });
+  await job.save();
   res.status(201).json({ job: job });
 };
 
