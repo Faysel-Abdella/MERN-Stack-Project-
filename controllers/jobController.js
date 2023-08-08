@@ -1,19 +1,24 @@
 import { StatusCodes } from "http-status-codes";
 import Job from "../models/jobModels.js";
 
-export const getAllJobs = async (req, res, next) => {
-  // console.log(req);
-  const jobs = await Job.find({});
-  res.status(StatusCodes.OK).json({ jobs: jobs });
-};
-
 export const createJob = async (req, res, next) => {
-  const { company, position } = req.body;
-  const job = new Job({ company, position });
+  // Add a createdBy property to the incoming request body and make the
+  // value equal to the userId that we attached to the request object
+  // when the user login
+  req.body.createdBy = req.user.userId;
+
+  const job = new Job(req.body);
   await job.save();
   //The other way is to say const job = Job.create({company, position})
   //create() will create and save to DB automatically
   res.status(StatusCodes.CREATED).json({ job: job });
+};
+
+export const getAllJobs = async (req, res, next) => {
+  //Find only the jobs that belong to the current user(if the createdBy value is === the userId attached to the
+  //request body)
+  const jobs = await Job.find({ createdBy: req.user.userId });
+  res.status(StatusCodes.OK).json({ jobs: jobs });
 };
 
 export const getJob = async (req, res, next) => {

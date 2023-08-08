@@ -14,7 +14,7 @@ export const authenticateUser = async (req, res, next) => {
     error.statusCode = StatusCodes.UNAUTHORIZED;
     throw error;
   }
-  // next();
+
   // ** Step 2: If the  token cookie exist from incoming request cookies,
   //     verify whether the JWT is valid and if it is valid, grab the userID and role
 
@@ -22,6 +22,7 @@ export const authenticateUser = async (req, res, next) => {
     const { userId, role } = verifyJWT(token);
     //Attach the userId and role to the req object for later use
     req.user = { userId, role };
+    //the same as saying req { user: {userId, role} }
     console.log(req.user);
     next();
   } catch (err) {
