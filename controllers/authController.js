@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import User from "../models/userModel.js";
 
 import { hashPassword } from "../util/hashPassword.js";
+import { createJWT } from "../util/tokenUtil.js";
 
 export const register = async (req, res, next) => {
   const name = req.body.name;
@@ -50,5 +51,10 @@ export const login = async (req, res, next) => {
     error.statusCode = StatusCodes.UNAUTHORIZED;
     throw error;
   }
-  res.send("login");
+
+  // ### After the user passes all the above validation, now create a token for him
+
+  const token = createJWT({ userId: user._id, role: user.role });
+
+  res.json({ token });
 };
