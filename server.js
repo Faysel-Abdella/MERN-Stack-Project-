@@ -5,12 +5,15 @@ dotenv.config();
 import express from "express";
 import morgan from "morgan";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 import { StatusCodes } from "http-status-codes/build/cjs/status-codes.js";
 const app = express();
 
 // Parse any incoming json POST or PUT request and enable working with it
 // as just a javascript object
 app.use(express.json());
+// Parse the cookie from any incoming request
+app.use(cookieParser());
 
 //If i am not in development phase (if i am in production phase), i don't
 //to log any request details(only if i'm developing i want to log details)
