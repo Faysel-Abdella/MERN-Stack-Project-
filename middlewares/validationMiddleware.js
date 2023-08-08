@@ -1,5 +1,6 @@
 import { body, param, validationResult } from "express-validator";
 import { StatusCodes } from "http-status-codes";
+import Job from "../models/jobModels.js";
 import { JOB_TYPE, JOB_STATUS } from "../util/constants.js";
 import { hashPassword } from "../util/hashPassword.js";
 import User from "../models/userModel.js";
@@ -41,15 +42,33 @@ export const validateJobInput = withValidatorErrors([
 
 export const validateIdParam = withValidatorErrors([
   //Test(validate) if the provided id mongoDB id, or not
-  param("id")
-    .custom((value) => {
-      //If this block returns true this means the id is mongoDB id, and this middleware will not throw any error
-      // if return false the error will be thrown form this block with my own message
-      //Here i'm not testing if there is a job with the provided id
-      //i'm just testing if the id is mongoDB id
-      return mongoose.Types.ObjectId.isValid(value);
-    })
-    .withMessage("invalid MongoDB id"),
+  param("id").custom(async (value, { req }) => {
+    //Here i'm not testing if there is a job with the provided id
+    //i'm just testing if the id is mongoDB id
+    const isValidMongoId = mongoose.Types.ObjectId.isValid(value);
+    console.log("isValid id", isValidMongoId);
+    if (!isValidMongoId) {
+      const error = new Error("Invalid MongoDB id");
+      error.statusCode = StatusCodes.BAD_REQUEST;
+      throw error;
+    }
+    // Check if a job is exist with the provided id
+    const job = await Job.findById(value);
+    if (!job) {
+      const error = new Error("no job with such id");
+      error.statusCode = StatusCodes.NOT_FOUND;
+      throw error;
+    }
+    //Check if the user requests to this job is an admin, if is there is no problem
+    //Check the user requests to this job is the owner
+    const isAdmin = req.user.role === "admin";
+    const isOwner = req.user.userId.toString() === job.createdBy.toString();
+    if (!isAdmin && !isOwner) {
+      const error = new Error("not authorize to access this source");
+      error.statusCode = StatusCodes.UNAUTHORIZED;
+      throw error;
+    }
+  }),
 ]);
 
 export const validateRegisterInput = withValidatorErrors([
