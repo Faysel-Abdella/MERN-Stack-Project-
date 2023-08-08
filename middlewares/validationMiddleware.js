@@ -1,6 +1,7 @@
 import { body, param, validationResult } from "express-validator";
 import { StatusCodes } from "http-status-codes";
 import { JOB_TYPE, JOB_STATUS } from "../util/constants.js";
+import { hashPassword } from "../util/hashPassword.js";
 import User from "../models/userModel.js";
 import mongoose, { Error } from "mongoose";
 
@@ -74,4 +75,11 @@ export const validateRegisterInput = withValidatorErrors([
   body("location").notEmpty().withMessage("Location is required"),
 ]);
 
-//Now in all routes i will add these exporting function by passing my own testing logic
+export const validateLoginInput = withValidatorErrors([
+  body("email")
+    .notEmpty()
+    .withMessage("Email is required")
+    .isEmail()
+    .withMessage("Please provide a valid email"),
+  body("password").notEmpty().withMessage("password is required"),
+]);
