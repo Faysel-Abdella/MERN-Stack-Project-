@@ -55,7 +55,7 @@ export const login = async (req, res, next) => {
   // ### After the user passes all the above validation, now create a token for him and set up this token in his cookie
 
   const token = createJWT({ userId: user._id, role: user.role });
-
+  //calculate the equivalent milliseconds for one day
   const oneDay = 1000 * 60 * 60 * 24;
 
   res.cookie("token", token, {

@@ -20,12 +20,15 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+// routes import
 import jobRouter from "./routes/jobRouter.js";
 import authRouter from "./routes/authRouter.js";
+//middleware import
+import { authenticateUser } from "./middlewares/authMiddleware.js";
 
 // Routes
 
-app.use(jobRouter);
+app.use(authenticateUser, jobRouter);
 app.use(authRouter);
 
 //404 middleware
