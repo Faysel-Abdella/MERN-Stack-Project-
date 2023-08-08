@@ -66,3 +66,13 @@ export const login = async (req, res, next) => {
   });
   res.status(StatusCodes.OK).json({ message: "user logged in" });
 };
+
+export const logout = (req, res) => {
+  //i will set a d/t value for the cookie of the same name the user logged in
+  res.cookie("token", "logout", {
+    httpOnly: true,
+    //and make this to be expires now
+    expires: new Date(Date.now()),
+  });
+  res.status(StatusCodes.OK).json({ msg: "user logged out" });
+};
