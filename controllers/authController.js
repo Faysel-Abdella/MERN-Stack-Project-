@@ -52,9 +52,17 @@ export const login = async (req, res, next) => {
     throw error;
   }
 
-  // ### After the user passes all the above validation, now create a token for him
+  // ### After the user passes all the above validation, now create a token for him and set up this token in his cookie
 
   const token = createJWT({ userId: user._id, role: user.role });
 
-  res.json({ token });
+  const oneDay = 1000 * 60 * 60 * 24;
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    expires: new Date(Date.now() + oneDay), //setting that our cookie will expires after one day
+    secure: process.env.NODE_ENV === "production", //If the NODE_ENV environment variable is set to "production", the secure property will be
+    //set to true, indicating that the cookie should only be sent over a secure connection.
+  });
+  res.status(StatusCodes.OK).json({ message: "user logged in" });
 };
