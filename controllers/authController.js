@@ -6,6 +6,7 @@ import { hashPassword } from "../util/hashPassword.js";
 import { createJWT } from "../util/tokenUtil.js";
 
 export const register = async (req, res, next) => {
+  console.log("registering");
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;

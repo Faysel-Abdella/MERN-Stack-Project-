@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { verifyJWT } from "../util/tokenUtil.js";
 
-export const authenticateUser = async (req, res, next) => {
+export const authenticateUser = (req, res, next) => {
   // ** Step 1: Check if token cookie exist from incoming request cookies,
   //    if it does't exist response unauthenticated error
 

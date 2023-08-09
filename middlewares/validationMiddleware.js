@@ -11,6 +11,7 @@ import mongoose, { Error } from "mongoose";
 const withValidatorErrors = (validateValues) => {
   //The argument is the value to be tested
   //Since i have two middleware i can group theme with []
+  console.log("Validating input")
   return [
     validateValues,
     (req, res, next) => {
