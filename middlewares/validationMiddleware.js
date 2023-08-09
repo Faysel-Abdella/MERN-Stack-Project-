@@ -11,7 +11,6 @@ import mongoose, { Error } from "mongoose";
 const withValidatorErrors = (validateValues) => {
   //The argument is the value to be tested
   //Since i have two middleware i can group theme with []
-  console.log("Validating input")
   return [
     validateValues,
     (req, res, next) => {
@@ -102,4 +101,22 @@ export const validateLoginInput = withValidatorErrors([
     .isEmail()
     .withMessage("Please provide a valid email"),
   body("password").notEmpty().withMessage("password is required"),
+]);
+
+export const validateUpdateUserInput = withValidatorErrors([
+  body("name").notEmpty().withMessage("Name is required"),
+  body("email")
+    .notEmpty()
+    .withMessage("Email is required")
+    .isEmail()
+    .withMessage("Please provide a valid email")
+    //check if there is a user with the same email
+    .custom(async (value, { req }) => {
+      const user = await User.findOne({ email: value });
+      if (user && user._id.toString() !== req.user.userId) {
+        throw new Error("email already exist");
+      }
+    }),
+  body("lastName").notEmpty().withMessage("Last name is required"),
+  body("location").notEmpty().withMessage("Location is required"),
 ]);
