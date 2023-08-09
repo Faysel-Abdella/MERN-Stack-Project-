@@ -1,4 +1,5 @@
 import { Form, Link, redirect, useNavigation } from "react-router-dom";
+import { toast } from "react-toastify";
 import Wrapper from "../assets/wrappers/RegisterAndLoginPage";
 import { FormRow, Logo } from "../components";
 import customFetch from "../util/customFetch.js";
@@ -11,9 +12,11 @@ export const action = async ({ request }) => {
 
   try {
     await customFetch.post("/auth/register", data);
+    toast.success("Registration successful");
     return redirect("/login");
   } catch (error) {
-    console.log(error);
+    //use conditional nesting
+    toast.error(error?.response?.data?.message);
     return error;
   }
 };
