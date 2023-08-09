@@ -30,6 +30,12 @@ import userRouter from "./routes/userRouter.js";
 //middleware import
 import { authenticateUser } from "./middlewares/authMiddleware.js";
 
+// test
+
+app.get("/api/v1/test", (req, res) => {
+  res.json({ message: "hi there" });
+});
+
 // Routes
 
 app.use(authenticateUser, jobRouter);
