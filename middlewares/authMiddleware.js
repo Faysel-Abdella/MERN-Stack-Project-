@@ -31,3 +31,12 @@ export const authenticateUser = (req, res, next) => {
     throw error;
   }
 };
+
+export const checkIfAdmin = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    const error = new Error("unauthenticated error");
+    error.statusCode = StatusCodes.UNAUTHORIZED;
+    throw error;
+  }
+  next();
+};
