@@ -14,10 +14,12 @@ import {
   Stats,
 } from "../src/pages/index";
 
+import { action as registerAction } from "./pages/Register.jsx";
+
 const chechDefaultTheme = () => {
   const isDarkTheme = localStorage.getItem("darkTheme") === "true";
   document.body.classList.toggle("dark-theme", isDarkTheme);
-  console.log("Function excuted");
+  console.log("Function executed");
   return isDarkTheme;
 };
 
@@ -33,7 +35,11 @@ const router = createBrowserRouter([
         index: true,
         element: <Landing />,
       },
-      { path: "register", element: <Register /> },
+      {
+        path: "register",
+        element: <Register />,
+        action: registerAction,
+      },
       {
         path: "login",
         element: <Login />,

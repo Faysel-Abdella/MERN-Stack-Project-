@@ -38,9 +38,9 @@ app.get("/api/v1/test", (req, res) => {
 
 // Routes
 
+app.use(authRouter);
 app.use(authenticateUser, jobRouter);
 app.use(authenticateUser, userRouter);
-app.use(authRouter);
 
 //404 middleware
 app.use("*", (req, res, next) => {
