@@ -25,4 +25,12 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema.methods.withOutPassword = function () {
+  //Must use function key word
+  let obj = this.toObject();
+  //this refer to the user created base on this Schema model
+  delete obj.password;
+  return obj;
+};
+
 export default mongoose.model("User", userSchema);
