@@ -8,7 +8,7 @@ import {
   validateRegisterInput,
 } from "../middlewares/validationMiddleware.js";
 
-router.post("/api/v1/auth/register", validateRegisterInput, register);
+router.post("/api/v1/register", validateRegisterInput, register);
 
 router.post("/api/v1/auth/login", validateLoginInput, login);
 

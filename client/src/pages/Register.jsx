@@ -11,7 +11,7 @@ export const action = async ({ request }) => {
   const data = Object.fromEntries(formData);
 
   try {
-    await customFetch.post("/auth/register", data);
+    await customFetch.post("/register", data);
     toast.success("Registration successful");
     return redirect("/login");
   } catch (error) {
