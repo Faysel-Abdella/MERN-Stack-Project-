@@ -1,4 +1,4 @@
-import { FormRow } from "../components";
+import { FormRow, FormRowSelect } from "../components";
 import Wrapper from "../assets/wrappers/DashboardFormPage";
 import { useOutletContext } from "react-router-dom";
 import { JOB_STATUS, JOB_TYPE } from "../../../util/constants";
@@ -23,9 +23,21 @@ const AddJob = () => {
             name="jobLocation"
             defaultValue={user.location}
           />
+          <FormRowSelect
+            labelText="job status"
+            name="jobStatus"
+            defaultValue={user.location}
+            list={Object.values(JOB_STATUS)}
+          />
+          <FormRowSelect
+            labelText="job typw"
+            name="jobType"
+            defaultValue={JOB_TYPE.FULL_TIME}
+            list={Object.values(JOB_TYPE)}
+          />
           <button
             type="submit"
-            className="btn btn-block"
+            className="btn btn-block form-btn"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Submitting..." : "Submit"}
