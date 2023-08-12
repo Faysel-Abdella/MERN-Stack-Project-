@@ -18,8 +18,17 @@ export const loader = async ({ params }) => {
   }
 };
 
-export const action = async () => {
-  return null;
+export const action = async ({ request, params }) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  // console.log(data);
+  try {
+    await customFetch.patch(`/jobs/${params.id}`, data);
+    return redirect("/dashboard/all-jobs");
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+    return error;
+  }
 };
 
 const EditJob = () => {
