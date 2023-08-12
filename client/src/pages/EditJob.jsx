@@ -7,7 +7,8 @@ import { toast } from "react-toastify";
 import customFetch from "../util/customFetch.js";
 
 export const loader = async ({ params }) => {
-  // when this page is to be displayed check if the job with provided id is there
+  // when this page is to be displayed check if the job with provided id is there, and
+  //store the information abt that job by fetching fro later use in the component
   try {
     const { data } = await customFetch.get(`/jobs/${params.id}`);
     return data;
@@ -23,7 +24,45 @@ export const action = async () => {
 
 const EditJob = () => {
   const { job } = useLoaderData();
-  console.log(job);
-  return <h1>EditJob Page</h1>;
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
+  return (
+    <Wrapper>
+      <Form method="POST" className="form">
+        <h4 className="form-title">edit job</h4>
+        <div className="form-center">
+          <FormRow type="text" name="position" defaultValue={job.position} />
+          <FormRow type="text" name="company" defaultValue={job.company} />
+          <FormRow
+            type="text"
+            name="jobLocation"
+            defaultValue={job.jobLocation}
+            labelText="job location"
+          />
+          <FormRow
+            type="text"
+            name="jobStatus"
+            defaultValue={job.jobStatus}
+            labelText="job status"
+            list={Object.values(JOB_STATUS)}
+          />
+          <FormRow
+            type="text"
+            name="jobType"
+            defaultValue={job.jobType}
+            labelText="job type"
+            list={Object.values(JOB_TYPE)}
+          />
+        </div>
+        <button
+          type="submit"
+          className="btn btn-block form-btn"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Submitting..." : "Submit"}
+        </button>
+      </Form>
+    </Wrapper>
+  );
 };
 export default EditJob;
