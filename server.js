@@ -23,6 +23,14 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+app.use(express.static(path.resolve(__dirname, "./public")));
+
 // routes import
 import jobRouter from "./routes/jobRouter.js";
 import authRouter from "./routes/authRouter.js";

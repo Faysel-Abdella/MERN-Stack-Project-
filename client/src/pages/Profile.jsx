@@ -1,6 +1,69 @@
+import { FormRow } from "../components";
+import Wrapper from "../assets/wrappers/DashboardFormPage";
+import { useOutletContext } from "react-router-dom";
+import { useNavigation, Form } from "react-router-dom";
+import customFetch from "../util/customFetch";
+import { toast } from "react-toastify";
+
+// We do not send image to the server as JSON, we send it just as formData with out changing it to obj
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const file = formData.get("avatar");
+  if (file && file.size > 500000) {
+    toast.error("Image size too large");
+    return null;
+  }
+
+  try {
+    await customFetch.patch("/users/update-user", formData);
+    toast.success("Profile update successfully");
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+  return null;
+};
+
 const Profile = () => {
+  const { user } = useOutletContext();
+  const { name, lastName, email, location } = user;
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
   return (
-    <h1>Profile Page</h1>
-  )
-}
-export default Profile
+    <Wrapper>
+      <Form method="POST" className="form" encType="multipart/form-data">
+        <h4 className="form-title">profile</h4>
+        <div className="form-center">
+          <div className="from-row">
+            <label htmlFor="avatar" className="form-label">
+              Select an image file (max 0.5MB)
+            </label>
+            <input
+              type="file"
+              id="avatar"
+              name="avatar"
+              className="form-input"
+            />
+          </div>
+          <FormRow type="text" name="name" defaultValue={name} />
+          <FormRow
+            type="text"
+            name="lastName"
+            labelText="last name"
+            defaultValue={lastName}
+          />
+          <FormRow type="text" name="email" defaultValue={email} />
+          <FormRow type="text" name="location" defaultValue={location} />
+          <button
+            className="btn btn-block form-btn"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "submitting..." : "submit"}
+          </button>
+        </div>
+      </Form>
+    </Wrapper>
+  );
+};
+export default Profile;
