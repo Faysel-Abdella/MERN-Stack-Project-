@@ -42,7 +42,7 @@ app.use("*", (req, res, next) => {
   res.status(404).json({ message: "page not found" });
 });
 
-//Error middleware
+//Error middleware,
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
   const message = err.message || "Something went wrong";
