@@ -4,6 +4,7 @@ import { useLoaderData, redirect } from "react-router-dom";
 import customFetch from "../util/customFetch";
 import Wrapper from "../assets/wrappers/StatsContainer";
 import { toast } from "react-toastify";
+import { StatItem } from "../components";
 
 export const loader = async () => {
   try {
@@ -16,10 +17,24 @@ export const loader = async () => {
 };
 
 const Admin = () => {
-  const { user, jobs } = useLoaderData();
+  const { users, jobs } = useLoaderData();
   return (
     <Wrapper>
-      <h1>Admin Page</h1>;
+      <StatItem
+        title="current users"
+        count={users}
+        color="#e9b949"
+        bcg="#fcef7"
+        icon={<FaSuitcaseRolling />}
+      ></StatItem>
+
+      <StatItem
+        title="total jobs"
+        count={jobs}
+        color="#647acb"
+        bcg="#e0e8f9"
+        icon={<FaCalendarCheck />}
+      ></StatItem>
     </Wrapper>
   );
 };
