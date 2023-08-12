@@ -12,6 +12,7 @@ import {
   Profile,
   Admin,
   Stats,
+  EditJob,
 } from "../src/pages/index";
 
 import { action as registerAction } from "./pages/Register.jsx";
@@ -19,6 +20,8 @@ import { action as loginAction } from "./pages/Login.jsx";
 import { action as addJobAction } from "./pages/AddJob.jsx";
 import { loader as dashboardLoader } from "./pages/DashboardLayout.jsx";
 import { loader as allJobsLoader } from "./pages/AllJobs.jsx";
+import { loader as editJobLoader } from "./pages/EditJob.jsx";
+import { action as editPageAction } from "./pages/EditJob.jsx";
 
 const chechDefaultTheme = () => {
   const isDarkTheme = localStorage.getItem("darkTheme") === "true";
@@ -73,6 +76,11 @@ const router = createBrowserRouter([
           {
             path: "admin",
             element: <Admin />,
+          },
+          {
+            path: "edit-job/:id",
+            element: <EditJob />,
+            loader: editJobLoader,
           },
         ],
       },
