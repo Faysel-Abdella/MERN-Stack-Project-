@@ -18,9 +18,20 @@ export const createJob = async (req, res, next) => {
 };
 
 export const getAllJobs = async (req, res, next) => {
+  const { search } = req.query;
+  const queryObject = {
+    createdBy: req.user.userId,
+  };
+  //if there is a query called search add this to the query object to filter
+  if (search) {
+    queryObject.$or = [
+      { position: { $regex: search, $options: "i" } },
+      { company: { $regex: search, $options: "i" } },
+    ];
+  }
   //Find only the jobs that belong to the current user(if the createdBy value is === the userId attached to the
   //request body)
-  const jobs = await Job.find({ createdBy: req.user.userId });
+  const jobs = await Job.find(queryObject);
   res.status(StatusCodes.OK).json({ jobs: jobs });
 };
 
