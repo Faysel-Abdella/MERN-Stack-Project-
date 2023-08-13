@@ -1,6 +1,9 @@
 import { StatusCodes } from "http-status-codes";
 import Job from "../models/jobModels.js";
 
+import mongoose from "mongoose";
+import dayjs from "dayjs";
+
 export const createJob = async (req, res, next) => {
   // Add a createdBy property to the incoming request body and make the
   // value equal to the userId that we attached to the request object
@@ -59,4 +62,27 @@ export const deleteJob = async (req, res, next) => {
     throw error;
   }
   res.status(StatusCodes.OK).json({ message: "job deleted", job: removedJob });
+};
+
+export const showStats = async (req, res, next) => {
+  const defaultStats = {
+    pending: 22,
+    interview: 11,
+    declined: 4,
+  };
+  let monthlyApplications = [
+    {
+      date: "May 23",
+      count: 12,
+    },
+    {
+      date: "Jun 23",
+      count: 9,
+    },
+    {
+      date: "Jul 23",
+      count: 3,
+    },
+  ];
+  res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications });
 };
