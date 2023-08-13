@@ -30,6 +30,7 @@ const StatsContainer = ({ defaultStats }) => {
       {stats.map((item) => {
         return <StatItem key={item.title} {...item} />;
       })}
+      <span></span>
     </Wrapper>
   );
 };
