@@ -13,7 +13,7 @@ export const loader = async ({ params }) => {
     const { data } = await customFetch.get(`/jobs/${params.id}`);
     return data;
   } catch (error) {
-    toast.error(error?.response?.data?.message);
+    toast.error(error?.response?.data?.message,  {autoClose:3000});
     return "/dashboard/all-jobs";
   }
 };
@@ -26,7 +26,7 @@ export const action = async ({ request, params }) => {
     await customFetch.patch(`/jobs/${params.id}`, data);
     return redirect("/dashboard/all-jobs");
   } catch (error) {
-    toast.error(error?.response?.data?.message);
+    toast.error(error?.response?.data?.message, {autoClose:3000});
     return error;
   }
 };

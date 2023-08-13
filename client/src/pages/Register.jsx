@@ -12,11 +12,11 @@ export const action = async ({ request }) => {
 
   try {
     await customFetch.post("/register", data);
-    toast.success("Registration successful");
+    toast.success("Registration successful", { autoClose: 1000 });
     return redirect("/login");
   } catch (error) {
     //use conditional nesting
-    toast.error(error?.response?.data?.message);
+    toast.error(error?.response?.data?.message, { autoClose: 1000 });
     return error;
   }
 };

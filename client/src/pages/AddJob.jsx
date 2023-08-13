@@ -12,7 +12,7 @@ export const action = async ({ request }) => {
 
   try {
     await customFetch.post("/jobs", data);
-    toast.success("Job added successfully");
+    toast.success("Job added successfully",  {autoClose:3000});
     return redirect("all-jobs");
   } catch (error) {
     toast.error(error?.response?.data?.message);

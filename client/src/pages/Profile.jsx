@@ -10,16 +10,16 @@ import { toast } from "react-toastify";
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const file = formData.get("avatar");
-  if (file && file.size > 500000) {
-    toast.error("Image size too large");
+  if (file && file.size > 10000000) {
+    toast.error("Image size too large", { autoClose: 3000 });
     return null;
   }
 
   try {
     await customFetch.patch("/users/update-user", formData);
-    toast.success("Profile update successfully");
+    toast.success("Profile update successfully", { autoClose: 3000 });
   } catch (error) {
-    toast.error(error?.response?.data?.message);
+    toast.error(error?.response?.data?.message, { autoClose: 3000 });
   }
   return null;
 };

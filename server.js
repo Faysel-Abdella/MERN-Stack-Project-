@@ -7,6 +7,7 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import { StatusCodes } from "http-status-codes/build/cjs/status-codes.js";
+import cloudinary from "cloudinary";
 const app = express();
 
 // Parse any incoming json POST or PUT request and enable working with it
@@ -22,6 +23,12 @@ if (process.env.NODE_ENV === "development") {
   //"production" so the following line will not execute
   app.use(morgan("dev"));
 }
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
