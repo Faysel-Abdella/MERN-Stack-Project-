@@ -8,6 +8,10 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import { StatusCodes } from "http-status-codes/build/cjs/status-codes.js";
 import cloudinary from "cloudinary";
+
+// production(deployment) tools
+import helmet from "helmet";
+
 const app = express();
 
 // Parse any incoming json POST or PUT request and enable working with it
@@ -18,6 +22,7 @@ app.use(cookieParser());
 
 //If i am not in development phase (if i am in production phase), i don't
 //to log any request details(only if i'm developing i want to log details)
+app.use(morgan("combined"));
 if (process.env.NODE_ENV === "development") {
   //When you deploy this app the deployment platform will change the NODE_ENV to
   //"production" so the following line will not execute
@@ -54,6 +59,8 @@ app.use(authenticateUser, userRouter);
 app.get("*", (req, res, next) => [
   res.sendFile(path.resolve(__dirname, "./public", "index.html")),
 ]);
+
+app.use(helmet());
 
 //404 middleware
 app.use("*", (req, res, next) => {
