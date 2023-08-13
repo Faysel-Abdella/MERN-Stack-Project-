@@ -51,6 +51,10 @@ app.use(authRouter);
 app.use(authenticateUser, jobRouter);
 app.use(authenticateUser, userRouter);
 
+app.get("*", (req, res, next) => [
+  res.sendFile(path.resolve(__dirname, "./public", "index.html")),
+]);
+
 //404 middleware
 app.use("*", (req, res, next) => {
   //'*' stands for all routes that do not match the all the above routes
