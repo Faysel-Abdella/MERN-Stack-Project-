@@ -18,7 +18,8 @@ export const createJob = async (req, res, next) => {
 };
 
 export const getAllJobs = async (req, res, next) => {
-  const { search } = req.query;
+  const { search, jobStatus, jobType } = req.query;
+  console.log("job status", jobStatus);
   const queryObject = {
     createdBy: req.user.userId,
   };
@@ -28,6 +29,16 @@ export const getAllJobs = async (req, res, next) => {
       { position: { $regex: search, $options: "i" } },
       { company: { $regex: search, $options: "i" } },
     ];
+  }
+
+  //Search by jobStatus and jobType
+  if (jobStatus && jobStatus !== "all") {
+    queryObject.jobStatus = jobStatus;
+    console.log(jobStatus);
+  }
+  if (jobType && jobType !== "all") {
+    queryObject.jobType = jobType;
+    console.log(jobStatus);
   }
   //Find only the jobs that belong to the current user(if the createdBy value is === the userId attached to the
   //request body)
