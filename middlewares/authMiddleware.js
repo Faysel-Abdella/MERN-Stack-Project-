@@ -21,6 +21,7 @@ export const authenticateUser = (req, res, next) => {
   try {
     const { userId, role } = verifyJWT(token);
     //Attach the userId and role to the req object for later use
+
     req.user = { userId, role };
     //the same as saying req { user: {userId, role} }
     console.log(req.user);

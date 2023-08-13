@@ -49,9 +49,9 @@ const LogIn = () => {
         <button type="submit" className="btn btn-block" disabled={isSubmitting}>
           {isSubmitting ? "submitting" : "submit"}
         </button>
-        <button type="button" className="btn btn-block">
+        {/* <button type="button" className="btn btn-block">
           Explore the app
-        </button>
+        </button> */}
       </Form>
 
       <p>
