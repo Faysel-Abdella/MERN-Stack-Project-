@@ -32,7 +32,9 @@ const SearchContainer = () => {
             type="search"
             name="search"
             defaultValue={search}
-            onChange={debounce()}
+            onChange={debounce((form) => {
+              submit(form);
+            })}
           />
           <FormRowSelect
             labelText="job status"
@@ -46,9 +48,7 @@ const SearchContainer = () => {
             name="jobType"
             list={["all", ...Object.values(JOB_TYPE)]}
             defaultValue={jobType}
-            onChange={debounce((form) => {
-              submit(form);
-            })}
+            onChange={debounce()}
           />
           <FormRowSelect
             name="sort"
