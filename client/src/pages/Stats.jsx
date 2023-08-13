@@ -1,19 +1,19 @@
 import { ChartsContainer, StatsContainer } from "../components";
-import customFetch from "../util/customFetch.js";
+import customFetch from "../util/customFetch";
 import { useLoaderData } from "react-router-dom";
-
 export const loader = async () => {
   try {
     const response = await customFetch.get("/jobs/stats");
+    console.log("the result", response);
     return response.data;
   } catch (error) {
+    console.log("error occure", error);
     return error;
   }
 };
 
 const Stats = () => {
   const { defaultStats, monthlyApplications } = useLoaderData();
-  console.log(defaultStats);
   return (
     <>
       <StatsContainer defaultStats={defaultStats} />

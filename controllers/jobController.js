@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Job from "../models/jobModels.js";
 
 import mongoose from "mongoose";
-import dayjs from "dayjs";
+import day from "dayjs";
 
 export const createJob = async (req, res, next) => {
   // Add a createdBy property to the incoming request body and make the
@@ -79,6 +79,12 @@ export const showStats = async (req, res, next) => {
     acc[title] = count;
     return acc;
   }, {});
+
+  const defaultStats = {
+    pending: stats.pending || 0,
+    interview: stats.interview || 0,
+    declined: stats.declined || 0,
+  };
 
   let monthlyApplications = await Job.aggregate([
     { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },

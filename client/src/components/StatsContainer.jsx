@@ -1,7 +1,6 @@
 import { FaSuitcaseRolling, FaCalendarCheck, FaBug } from "react-icons/fa";
 import Wrapper from "../assets/wrappers/StatsContainer";
 import StatItem from "./StatItem";
-
 const StatsContainer = ({ defaultStats }) => {
   const stats = [
     {
